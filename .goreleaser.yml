@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+
+project_name: sablier-zoraxy-plugin
+version: 2
+
+builds:
+  - binary: sablier-zoraxy-plugin
+    main: .
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+    # Same platforms as the Zoraxy releases.
+    targets:
+      - darwin_amd64
+      - darwin_arm64
+      - freebsd_amd64
+      - linux_386
+      - linux_amd64
+      - linux_arm_7
+      - linux_arm64
+      - linux_mipsle_softfloat
+      - linux_riscv64
+      - windows_amd64
+
+# The Zoraxy plugin store downloads a bare executable per GOOS_GOARCH, so
+# publish the binaries themselves rather than archives.
+archives:
+  - formats:
+      - binary
+    name_template: '{{ .Binary }}_{{ .Os }}_{{ .Arch }}'
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  use: github
